@@ -1,0 +1,38 @@
+{
+ "creation": "2020-09-29 17:48:06.021531",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "stock_sheet",
+  "stock_count_date"
+ ],
+ "fields": [
+  {
+   "fieldname": "stock_sheet",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Stock Sheet",
+   "options": "Stock Sheet"
+  },
+  {
+   "fetch_from": "stock_sheet.stock_count_date",
+   "fieldname": "stock_count_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Stock Count Date",
+   "read_only": 1
+  }
+ ],
+ "istable": 1,
+ "modified": "2020-09-29 17:48:13.423449",
+ "modified_by": "Administrator",
+ "module": "Xcount",
+ "name": "Stock Reconciliation Stock Sheet",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
