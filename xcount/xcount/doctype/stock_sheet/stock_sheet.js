@@ -156,7 +156,8 @@ frappe.ui.form.on('Stock Sheet', {
 					item_code: d.item_code,
 					warehouse: d.warehouse,
 					posting_date: frm.doc.stock_count_date,
-					posting_time: frm.doc.stock_count_time
+					posting_time: frm.doc.stock_count_time,
+					batch_no: d.batch_no
 				},
 				callback: function(r) {
 					frappe.model.set_value(cdt, cdn, "expected_qty", r.message.qty);
@@ -203,4 +204,8 @@ frappe.ui.form.on('Stock Sheet Item', {
 		// frm.events.set_default_qty(frm, cdt, cdn);
 		frm.events.set_expected_qty(frm, cdt, cdn);
 	},
+	
+	batch_no: function(frm, cdt, cdn){
+		frm.events.set_expected_qty(frm, cdt, cdn);
+	}
 });

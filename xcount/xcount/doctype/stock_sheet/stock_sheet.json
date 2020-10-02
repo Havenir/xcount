@@ -14,7 +14,6 @@
   "default_warehouse",
   "sb_8",
   "barcode",
-  "batch",
   "cb_8",
   "barcode_qty",
   "sb_10",
@@ -146,18 +145,12 @@
    "options": "Stock Sheet",
    "print_hide": 1,
    "read_only": 1
-  },
-  {
-   "fieldname": "batch",
-   "fieldtype": "Link",
-   "label": "Batch",
-   "options": "Batch"
   }
  ],
  "icon": "fa fa-upload-alt",
  "is_submittable": 1,
  "max_attachments": 1,
- "modified": "2020-09-29 17:49:07.528363",
+ "modified": "2020-10-01 18:29:41.480514",
  "modified_by": "Administrator",
  "module": "Xcount",
  "name": "Stock Sheet",
