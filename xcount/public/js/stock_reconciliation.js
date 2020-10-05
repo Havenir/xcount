@@ -23,6 +23,9 @@ frappe.ui.form.on('Stock Reconciliation', {
                     'stock_count_date': records[row].stock_count_date
                 })
             }
+
+            frm.refresh_field('stock_sheets');
+
             frappe.call('xcount.events.stock_reconciliation.get_items_from_stocksheets', 
             {stock_sheets : records})
             .then(r => {
@@ -31,11 +34,10 @@ frappe.ui.form.on('Stock Reconciliation', {
                         'item_code': r.message[row].item_code,
                         'warehouse': r.message[row].warehouse,
                         'qty': r.message[row].qty,
-                        'valuation_rate': r.message[row].valuation_rate
+                        'batch_no': r.message[row].batch_no
                     })
                 }
                 frm.refresh_field('items');
-                frm.refresh_field('stock_sheets');
             })
         })
         

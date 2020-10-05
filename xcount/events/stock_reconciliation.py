@@ -10,6 +10,8 @@ def validate_items_and_stock_sheets(doc, method):
         stock_sheet = frappe.get_doc('Stock Sheet', row.stock_sheet)
         if stock_sheet.reconciled == 1:
             frappe.throw('Stock Sheet# {0} is already reconciled'.format(stock_sheet.name))
+        else:
+            stock_sheet.db_set('reconciled', 1)
 
 @frappe.whitelist()
 def get_items_from_stocksheets(stock_sheets):
@@ -18,8 +20,18 @@ def get_items_from_stocksheets(stock_sheets):
     items = {}
     for row in stock_sheets:
         stock = frappe.get_doc('Stock Sheet', row['name'])
-        if (stock.items[0].item_code in items) and items[stock.items[0].item_code].warehouse == stock.items[0].warehouse:
-            items[stock.items[0].item_code].qty += stock.items[0].qty
-        else:
-            items[stock.items[0].item_code] = stock.items[0]
-    return items
+        for item in stock.items:
+            item_tuple = (item.item_code, item.warehouse, item.batch_no)
+            if not item_tuple in items:
+                items[item_tuple] = item.qty
+            else:
+                items[item_tuple] += item.qty
+    item_array = []
+    for row in items:
+        item_array.append({
+            'item_code': row[0],
+            'warehouse': row[1],
+            'qty': items[row],
+            'batch_no': row[2]
+        })
+    return item_array
