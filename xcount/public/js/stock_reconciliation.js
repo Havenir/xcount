@@ -1,8 +1,21 @@
 frappe.ui.form.on('Stock Reconciliation', {
     refresh: function (frm) {
+        frm.events.purpose(frm);
+    },
+    purpose: function (frm) {  
+        console.log(frm.doc.purpose);
+        if (frm.doc.purpose === 'Stock Reconciliation'){
+            frm.events.create_stock_sheet_button(frm);
+        }
+    },
+    create_stock_sheet_button: function (frm) {  
         if (frm.doc.docstatus === 0){
-            frm.add_custom_button(__("Stock Count Sheets"), function() {
-				frm.trigger('get_stock_sheets');
+            frm.add_custom_button(__("Get Stock Count Sheets"), function() {
+                if (!frm.doc.warehouse){
+                    frappe.msgprint('No Warehouse selected')
+                }else{
+                    frm.trigger('get_stock_sheets');
+                }
 			});
         }
     },
@@ -15,6 +28,9 @@ frappe.ui.form.on('Stock Reconciliation', {
                 docstatus: 1
             }
         }).then(records => {
+            if (records.length === 0){
+                frappe.msgprint(`No Stock Count Sheet pending for ${frm.doc.warehouse}`);
+            }
             frm.doc.stock_sheets = []
             frm.doc.items = []
             for (let row in records) {
@@ -41,5 +57,26 @@ frappe.ui.form.on('Stock Reconciliation', {
             })
         })
         
+    }
+})
+
+frappe.ui.form.on('Stock Reconciliation Item', {
+    item_code: function (frm, cdt, cdn) {  
+
+
+    },
+    warehouse: function (frm, cdt, cdn) {  
+        let row = frappe.get_doc(cdt, cdn)
+        if (row.item_code && row.warehouse){
+            row.batch_no = null;
+            frm.refresh_field('items')
+            frm.set_query('batch_no', 'items', () => {
+                return {
+                    filters: {
+                        item  : row.item_code
+                    }
+                }
+            })
+        }
     }
 })
