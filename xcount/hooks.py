@@ -81,7 +81,7 @@ doctype_js = {"Stock Reconciliation" : "public/js/stock_reconciliation.js"}
 
 doc_events = {
 	"Stock Reconciliation": {
-		"before_submit": "xcount.events.stock_reconciliation.validate_items_and_stock_sheets"
+		"on_submit": "xcount.events.stock_reconciliation.validate_items_and_stock_sheets"
 	}
 }
 

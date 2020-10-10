@@ -48,8 +48,7 @@ frappe.ui.form.on('Stock Reconciliation', {
                     frm.doc.items = []
                     for (let row in selections) {
                         frm.add_child('stock_sheets', {
-                            'stock_sheet': selections[row].name,
-                            'stock_count_date': selections[row].stock_count_date
+                            'stock_sheet': selections[row],
                         })
                     }
         
@@ -75,7 +74,7 @@ frappe.ui.form.on('Stock Reconciliation', {
                     })
                 }
             });
-        })
+        },__("Select Warehouse"), __("Proceed"));
         
 
         frappe.db.get_list('Stock Sheet', {

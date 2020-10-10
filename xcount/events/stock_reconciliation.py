@@ -7,7 +7,6 @@ from erpnext.stock.doctype.batch.batch import get_batch_qty, get_batches
 def validate_items_and_stock_sheets(doc, method):
     #Validate if stock_sheets are not reconciled yet
     for row in doc.stock_sheets:
-        print(row.stock_sheet)
         stock_sheet = frappe.get_doc('Stock Sheet', row.stock_sheet)
         if stock_sheet.reconciled == 1:
             frappe.throw('Stock Sheet# {0} is already reconciled'.format(stock_sheet.name))
