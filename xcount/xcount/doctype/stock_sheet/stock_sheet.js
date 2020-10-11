@@ -10,8 +10,9 @@ frappe.ui.form.on('Stock Sheet', {
 				frm.events.get_items(frm);
 			});
 		}
-
-		frm.set_value('counted_by', frappe.session.user);
+		if (frm.is_new()){
+			frm.set_value('counted_by', frappe.session.user);
+		}
 	},
 
 	listen_to: function (frm, fieldname) {
