@@ -63,6 +63,18 @@ frappe.ui.form.on('Stock Sheet', {
 	onload: function(frm) {
 		frm.add_fetch("item_code", "item_name", "item_name");
 
+		if (frm.fields_dict["items"].grid.get_field('batch_no')) {
+			frm.set_query("batch_no", "items", function(frm, cdt, cdn) {
+			  let item = locals[cdt][cdn];
+			  return {
+				query: "xcount.events.query.get_batch_nos",
+				filters: {
+				  "item": item.item_code
+				}
+			  }
+			});
+		}
+		
 		if (frm.doc.company) {
 			erpnext.queries.setup_queries(frm, "Warehouse", function() {
 				return erpnext.queries.warehouse(frm.doc);
@@ -70,6 +82,7 @@ frappe.ui.form.on('Stock Sheet', {
 		}
 
 		frm.events.listen_to(frm, 'barcode_qty');
+
 	},
 
 	barcode:function(frm) {
@@ -213,13 +226,13 @@ frappe.ui.form.on('Stock Sheet Item', {
 
 	warehouse: function(frm, cdt, cdn) {
 		frm.events.set_expected_qty(frm, cdt, cdn);
-		frm.events.set_batch_query(frm, cdt, cdn);
+		// frm.events.set_batch_query(frm, cdt, cdn);
 	},
 
 	item_code: function(frm, cdt, cdn) {
 		frm.events.set_row_default_warehouse(frm, cdt, cdn);
 		frm.events.set_expected_qty(frm, cdt, cdn);
-		frm.events.set_batch_query(frm, cdt, cdn);
+		// frm.events.set_batch_query(frm, cdt, cdn);
 	},
 	
 	batch_no: function(frm, cdt, cdn){
